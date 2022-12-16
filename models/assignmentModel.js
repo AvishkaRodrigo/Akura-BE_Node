@@ -20,7 +20,7 @@ const assignmentSchema = new Schema({
     required : true
   },
   deadline : {
-    type : Date,        // should be able to store not only date but also time as well
+    type : Date,        // should be able to store not only date but also time as well 
     required : true
   },
 
