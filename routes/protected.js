@@ -1,0 +1,317 @@
+const express = require('express');
+const auth = require('../middleware/auth')
+const Class = require('../models/classModel')
+
+const {
+  studentProfile,
+  getStudent,
+  getStudents,
+  createStudent,
+  updateStudent,
+  deleteStudent
+} = require('../controllers/studentControllers')
+
+const { 
+  getUsers,
+  userProfile, 
+  getUser, 
+  createUser, 
+  deleteUser, 
+  updateUser
+ } = require('../controllers/userControllers');
+
+
+const {
+  getParents,
+  getParent,
+  createParent,
+  deleteParent,
+  updateParent
+} = require('../controllers/parentControllers')
+
+
+const {
+  getInstructors,
+  getInstructor,
+  createInstructor,
+  deleteInstructor,
+  updateInstructor
+} = require('../controllers/instructorControllers')
+
+const {
+  getStaffMembers,
+  getStaffMember,
+  createStaffMember,
+  deleteStaffMember,
+  updateStaffMember
+} = require('../controllers/staffMemberControllers')
+
+const {
+  getClasses,
+  getClass,
+  createClass,
+  deleteClass,
+  updateClass,
+  getInstructorClass
+} = require('../controllers/classControllers')
+
+const {
+  getPayments,
+  getPayment,
+  createPayment,
+  deletePayment,
+  updatePayment
+} = require('../controllers/paymentControllers')
+
+const {
+  getNotifications,
+  getNotification,
+  createNotification,
+  deleteNotification,
+  updateNotification
+} = require('../controllers/notificationControllers')
+
+const {
+  getAssignments,
+  getAssignment,
+  createAssignment,
+  deleteAssignment,
+  updateAssignment
+} = require('../controllers/assignmentControllers')
+
+const {
+  getResults,
+  getResult,
+  createResult,
+  deleteResult,
+  updateResult
+} = require('../controllers/resultControllers')
+
+const {
+  getAttendances,
+  getAttendance,
+  createAttendance,
+  deleteAttendance,
+  updateAttendance
+} = require('../controllers/attendanceControllers');
+
+
+
+const router = express.Router()
+
+// #############################User#############################
+  // GEt user profile
+  router.get('/user/profile', auth ,userProfile)
+
+  // GET all user
+  router.get('/user/', auth, getUsers)
+
+  // GET a single user
+  router.get('/user/:id', getUser)
+
+  // POST a new user
+  router.post('/user/', createUser)
+  
+  // DELETE a user
+  router.delete('/user/:id', deleteUser)
+  
+  // UPDATE a user
+  router.patch('/user/:id', updateUser)
+
+// #############################Student#############################
+
+  // GEt student profile
+  router.get('/student/profile', auth, studentProfile)
+
+  // GET all student
+  router.get('/student/', getStudents)
+
+  // GET a single student
+  router.get('/student/:id', getStudent)
+
+  // POST a new student
+  router.post('/student/', createStudent)
+  
+  // DELETE a student
+  router.delete('/student/:id', deleteStudent)
+  
+  // UPDATE a student
+  router.patch('/student/:id', updateStudent)
+
+
+// #############################Parent#############################
+
+
+  // GET all parents
+  router.get('/parent/', getParents)
+
+  // GET a single parent
+  router.get('/parent/:id', getParent)
+
+  // POST a new parent
+  router.post('/parent/', createParent)
+
+  // DELETE a parent
+  router.delete('/parent/:id', deleteParent)
+
+  // UPDATE a parent
+  router.patch('/parent/:id', updateParent)
+
+
+// #############################Instructor#############################
+
+
+  // GET all instructors
+  router.get('/instructor/', getInstructors)
+
+  // GET a single instructor
+  router.get('/instructor/:id', getInstructor)
+
+  // POST a new instructor
+  router.post('/instructor/', createInstructor)
+
+  // DELETE a instructor
+  router.delete('/instructor/:id', deleteInstructor)
+
+  // UPDATE a instructor
+  router.patch('/instructor/:id', updateInstructor) 
+
+
+// #############################Staffmember#############################
+
+
+  // GET all staffMembers
+  router.get('/staffMember/', getStaffMembers)
+
+  // GET a single staffMember
+  router.get('/staffMember/:id', getStaffMember)
+
+  // POST a new staffMember
+  router.post('/staffMember/', createStaffMember)
+
+  // DELETE a staffMember
+  router.delete('/staffMember/:id', deleteStaffMember)
+
+  // UPDATE a staffMember
+  router.patch('/staffMember/:id', updateStaffMember)
+
+
+// #############################Class#############################
+
+
+  // GET all classes
+  router.get('/class/', getClasses)
+
+  // GET a single class
+  router.get('/class/:id', getClass)
+
+  // POST a new class
+  router.post('/class/', createClass)
+
+  // DELETE a class
+  router.delete('/class/:id', deleteClass)
+
+  // UPDATE a class
+  router.patch('/class/:id', updateClass)
+
+  router.get('/getInstructorClasses/:id', getInstructorClass)
+
+
+// #############################Payment#############################
+
+
+  // GET all payments
+  router.get('/payment/', getPayments)
+
+  // GET a single payment
+  router.get('/payment/:id', getPayment)
+
+  // POST a new payment
+  router.post('/payment/', createPayment)
+
+  // DELETE a payment
+  router.delete('/payment/:id', deletePayment)
+
+  // UPDATE a payment
+  router.patch('/payment/:id', updatePayment)
+
+
+// #############################Notification#############################
+
+
+  // GET all notifications
+  router.get('/notification/', getNotifications)
+
+  // GET a single notification
+  router.get('/notification/:id', getNotification)
+
+  // POST a new notification
+  router.post('/instructor/notification/create/', createNotification)
+
+  // DELETE a notification
+  router.delete('/notification/:id', deleteNotification)
+
+  // UPDATE a notification
+  router.patch('/notification/:id', updateNotification)
+  
+  
+  // #############################Assignment#############################
+  
+  
+  // GET all assignments
+  router.get('/assignment/', getAssignments)
+  
+  // GET a single assignment
+  router.get('/assignment/:id', getAssignment)
+  
+  // POST a new assignment
+  router.post('/assignment/', createAssignment)
+  
+  // DELETE a assignment
+  router.delete('/assignment/:id', deleteAssignment)
+  
+  // UPDATE a assignment
+  router.patch('/assignment/:id', updateAssignment)
+  
+  
+// #############################Result#############################
+
+
+  // GET all results
+  router.get('/result/', getResults)
+
+  // GET a single result
+  router.get('/result/:id', getResult)
+
+  // POST a new result
+  router.post('/result/', createResult)
+
+  // DELETE a result
+  router.delete('/result/:id', deleteResult)
+
+  // UPDATE a result
+  router.patch('/result/:id', updateResult)
+
+
+// #############################Attendance#############################
+
+
+  // GET all attendances
+  router.get('/attendance/', getAttendances)
+
+  // GET a single attendance
+  router.get('/attendance/:id', getAttendance)
+
+  // POST a new attendance
+  router.post('/attendance/', createAttendance)
+
+  // DELETE a attendance
+  router.delete('/attendance/:id', deleteAttendance)
+
+  // UPDATE a attendance
+  router.patch('/attendance/:id', updateAttendance)
+
+
+
+  
+  module.exports = router
