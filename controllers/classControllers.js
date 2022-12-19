@@ -1,11 +1,36 @@
 const Class = require('../models/classModel')
+const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
 // get all classes
-const getClasses = async (req, res) => {
+const getAllClasses = async (req, res) => {
+  const instrctors = await User.find({
+    "userType" : 3
+  })
   const classes = await Class.find({}).sort({createdAt: -1})
   
-  res.status(200).json(classes)
+  const class4FE = classes.map((x)=>{
+    const ins = instrctors.find((a)=>a.ID == x.IN_ID)
+    const y = {
+      class_ID : x.class_ID,
+      instructorID : x.IN_ID,
+      instructor : ins.firstName + " " + ins.lastName,
+      subject : ins.subject,
+      grade : x.grade,
+      classType : x.classType,
+      hall : x.hall,
+      classDate : x.classDate,
+      startTime : x.startTime,
+      endTime : x.startTime,
+      admission : x.admission,
+      classFee : x.classFee,
+      // createdAt : x.createdAt
+    }
+    return y
+  })
+
+
+  res.status(200).json(class4FE)
 }
 
 // get a single class
@@ -85,7 +110,7 @@ const getInstructorClass = async (req, res) => {
 
 
 module.exports = {
-  getClasses,
+  getAllClasses,
   getClass,
   createClass,
   deleteClass,

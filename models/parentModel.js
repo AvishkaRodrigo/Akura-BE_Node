@@ -23,7 +23,7 @@ const parentSchema = new Schema({
     type : String,
     required : true
   },
-  PA_email : {
+  email2 : {
     type : String,
     required : true
   },

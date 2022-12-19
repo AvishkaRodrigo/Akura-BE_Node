@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const classSchema = new Schema({
   class_ID : {
     type : String,
-    required : true
+    // required : true
   },
   IN_ID : {
     type : String,

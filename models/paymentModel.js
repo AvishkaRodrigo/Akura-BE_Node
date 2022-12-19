@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 
 const paymentSchema = new Schema({
   payment_ID : {
-    type : String,
-    required : true
+    type : Number,
+    // required : true
   },	
   class_ID : {
     type : String,
@@ -17,10 +17,14 @@ const paymentSchema = new Schema({
   },
   SM_ID : {
     type : String,
-    required : true
+    // required : true
   },	
+  Admission : {  
+    type : Boolean,
+    required : true
+  },  
   Amount : {  
-    type : String,
+    type : Number,
     required : true
   },  
   month : {

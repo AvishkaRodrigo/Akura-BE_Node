@@ -47,7 +47,7 @@ const {
 } = require('../controllers/staffMemberControllers')
 
 const {
-  getClasses,
+  getAllClasses,
   getClass,
   createClass,
   deleteClass,
@@ -56,11 +56,16 @@ const {
 } = require('../controllers/classControllers')
 
 const {
-  getPayments,
+  getAllPaidClassFees,
   getPayment,
-  createPayment,
+  payClassFee,
   deletePayment,
-  updatePayment
+  updatePayment,
+  getAllPaidAddmisions,
+  getAllPaidClassFeesOfStudent,
+  getAllPaidAddmisionsOfStudent,
+  getAllPaidClassFeesOfStudentForClass,
+  getAllStudentsPaidClassFeeForClass
 } = require('../controllers/paymentControllers')
 
 const {
@@ -200,7 +205,7 @@ const router = express.Router()
 
 
   // GET all classes
-  router.get('/class/', getClasses)
+  router.get('/class/', getAllClasses)
 
   // GET a single class
   router.get('/class/:id', getClass)
@@ -221,14 +226,20 @@ const router = express.Router()
 
 
   // GET all payments
-  router.get('/payment/', getPayments)
+  router.get('/allClassFees/', getAllPaidClassFees)
+  router.get('/allClassFees/:id', getAllPaidClassFeesOfStudent)
+  router.get('/allStudentFees/:classID', getAllStudentsPaidClassFeeForClass)
+  router.get('/classFees/:classID/student/:id', getAllPaidClassFeesOfStudentForClass)
+
+  router.get('/allAddmissions/', getAllPaidAddmisions)
+  router.get('/allAddmissions/:id', getAllPaidAddmisionsOfStudent)
 
   // GET a single payment
   router.get('/payment/:id', getPayment)
 
   // POST a new payment
-  router.post('/payment/', createPayment)
-
+  router.post('/payment/', payClassFee)
+  
   // DELETE a payment
   router.delete('/payment/:id', deletePayment)
 

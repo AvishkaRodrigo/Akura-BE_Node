@@ -40,7 +40,9 @@ const authUser = (
 
             const payload = {
                 user : {
-                    id: user.id
+                    id: user.id,
+                    userType : user.userType,
+                    email : user.email
                 }
             }
 
@@ -49,8 +51,10 @@ const authUser = (
                 process.env.JWTSECRET,
                 {expiresIn : 360000},   // ! set token expire time
                 (err, token)=> {
-                if(err) throw err;
-                res.json({token});
+                    const decoded = jwt.verify(token, process.env.JWTSECRET)
+                    if(err) throw err;
+
+                    res.json({token: token, info : decoded});
                 }
             )
 

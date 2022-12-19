@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const assignmentSchema = new Schema({
   assign_ID : {
     type : String,
-    required : true
+    // required : true
   },
   class_ID : {
     type : String,

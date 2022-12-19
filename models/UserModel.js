@@ -11,7 +11,7 @@ const userSchema = new Schema({
     // required : true
   },
   userType : {
-    type : String,
+    type : Number,
     // required : true
   },
   firstName : {
@@ -38,7 +38,7 @@ const userSchema = new Schema({
     type : String,
     // required : true
   },
-  PA_email : {
+  email2 : {
     type : String,
     // required : true
   },

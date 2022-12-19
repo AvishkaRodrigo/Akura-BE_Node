@@ -28,7 +28,6 @@ const getAssignment = async (req, res) => {
 // create a new assignment
 const createAssignment = async (req, res) => {
     const {assign_ID,	class_ID,	assign_description,	assign_link,	deadline} = req.body
-    
     try {
         const assignment = await Assignment.create({assign_ID,	class_ID,	assign_description,	assign_link,	deadline})
         res.status(200).json(assignment)

@@ -50,7 +50,7 @@ const createUser = async (req, res) => {
       contactNumber,	
       gender,	
       email,	
-      PA_email,
+      email2,
       level,	
       year,	
       password, 
@@ -63,6 +63,7 @@ const createUser = async (req, res) => {
     } = req.body
     
     try {
+        
         let user = await User.findOne({email});
 
         if(user){
@@ -86,7 +87,7 @@ const createUser = async (req, res) => {
           contactNumber,	
           gender,	
           email,	
-          PA_email,
+          email2,
           level,	
           year,	
           password, 
