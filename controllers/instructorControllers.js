@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const getInstructors = async (req, res) => {
   const instructors = await User.find({
     "userType": "3"
-  }).sort({createdAt: -1})
+  }).select('-password')
 
   res.status(200).json(instructors)
 }
@@ -19,7 +19,7 @@ const getInstructor = async (req, res) => {
     return res.status(404).json({error: 'No such instructor'})
   }
 
-  const instructor = await User.findById(id)
+  const instructor = await User.findById(id).select('-password')
 
   if (!instructor) {
     return res.status(404).json({error: 'No such instructor'})

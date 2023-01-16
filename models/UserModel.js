@@ -39,7 +39,7 @@ const userSchema = new Schema({
     // required : true
   },
   email2 : {
-    type : String,
+    type : [String],
     // required : true
   },
   level : {

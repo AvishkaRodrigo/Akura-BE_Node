@@ -1,12 +1,13 @@
 const Parent = require('../models/parentModel')
 const User = require('../models/userModel')
 const mongoose = require('mongoose')
+const { getUser } = require('./userControllers')
 
 // get all parents
 const getParents = async (req, res) => {
   const parents = await User.find({
     "userType" : "2"
-  }).sort({createdAt: -1})
+  }).sort({createdAt: -1}).select('-password')
 
   res.status(200).json(parents)
 }
@@ -19,13 +20,33 @@ const getParent = async (req, res) => {
     return res.status(404).json({error: 'No such parent'})
   }
 
-  const parent = await User.findById(id)
+  const parent = await User.findById(id).select('-password')
 
   if (!parent) {
     return res.status(404).json({error: 'No such parent'})
   }
 
   res.status(200).json(parent)
+}
+
+const getMyStudents = async (req, res) => {
+  console.log( req.user.studentIds)
+  if (req.user.userType !== 2){
+    return res.status(400).json({msg : "access denied!"})
+  }else{
+    const myStudents = req.user.studentIds;
+    const myStuInfo = [];
+    const allStudents = await User.find().select('-password')
+
+    myStudents.map(async (x)=>{
+      allStudents.map((y)=>{
+        if(x == y.id){
+          myStuInfo.push(y)
+        }
+      })  
+    })
+    return res.status(200).json({myStuInfo})
+  }
 }
 
 // create a new parent
@@ -80,6 +101,7 @@ const updateParent = async (req, res) => {
 module.exports = {
   getParents,
   getParent,
+  getMyStudents,
   createParent,
   deleteParent,
   updateParent

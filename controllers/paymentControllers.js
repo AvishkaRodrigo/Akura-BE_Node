@@ -1,4 +1,6 @@
+const User = require('../models/userModel')
 const Payment = require('../models/paymentModel')
+const Class = require('../models/classModel')
 const mongoose = require('mongoose')
 
 // classFees
@@ -36,8 +38,10 @@ const getAllPaidClassFeesOfStudentForClass = async (req, res) => {
     "ST_ID" : id,
     "class_ID" : classID
   }).sort({createdAt: -1})
+  
+  const classDetails = await Class.findById(classID)
 
-  res.status(200).json(payments)
+  res.status(200).json({payments,classDetails})
 }
 
 
@@ -50,14 +54,54 @@ const getAllPaidAddmisions = async (req, res) => {
   res.status(200).json(payments)
 }
 
-const getAllPaidAddmisionsOfStudent = async (req, res) => {
+const myClasses = async (req, res) => {
   const { id } = req.params
+  console.log(id)
   const payments = await Payment.find({
     "Admission" : true,
     "ST_ID" : id
   }).sort({createdAt: -1})
+  
+  const instrctors = await User.find({
+    "userType" : 3
+  }).select('-password')
 
-  res.status(200).json(payments)
+  const classes = await Class.find({})
+  const mycls = []
+  const test = classes.map((x)=>{
+    payments.map((y)=>{
+      if(y.class_ID == x.id){
+        mycls.push(x)
+        // return y
+      }
+    })
+  })
+
+  console.log(mycls,instrctors)
+  const studentMyClasses = mycls.map((x)=>{
+    const ins = instrctors.find((a)=>a._id == x.IN_ID)
+    if(ins){
+      const y = {
+        class_ID : x._id,
+        instructorID : x.IN_ID,
+        instructor : ins.firstName + " " + ins.lastName,
+        subject : ins.subject,
+        level : ins.level || 'null',
+        grade : x.grade,
+        classType : x.classType,
+        hall : x.hall,
+        classDate : x.classDate,
+        startTime : x.startTime,
+        endTime : x.endTime,
+        admission : x.admission,
+        classFee : x.classFee,
+        // createdAt : x.createdAt
+      }
+      return y
+    }
+  })
+
+  res.status(200).json({studentMyClasses})
 }
 
 
@@ -81,7 +125,11 @@ const getPayment = async (req, res) => {
 // create a new payment
 const payClassFee = async (req, res) => {
     const {payment_ID,	class_ID,	ST_ID,	SM_ID, Admission, Amount,	month,	Type} = req.body
+    // console.log(req.user)
+    // TODO need to take student ID
     
+
+    // console.log(res)
     try {
         const payment = await Payment.create({payment_ID,	class_ID,	ST_ID,	SM_ID, Admission, Amount,	month,	Type})
         res.status(200).json(payment)
@@ -133,7 +181,7 @@ module.exports = {
   getAllStudentsPaidClassFeeForClass,
   getAllPaidClassFeesOfStudentForClass,
   getAllPaidAddmisions,
-  getAllPaidAddmisionsOfStudent,
+  myClasses,
   getPayment,
   payClassFee,
   deletePayment,

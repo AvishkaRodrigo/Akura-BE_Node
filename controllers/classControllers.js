@@ -6,22 +6,24 @@ const mongoose = require('mongoose')
 const getAllClasses = async (req, res) => {
   const instrctors = await User.find({
     "userType" : 3
-  })
-  const classes = await Class.find({}).sort({createdAt: -1})
+  }).select('-password')
+  const classes = await Class.find({})
   
   const class4FE = classes.map((x)=>{
     const ins = instrctors.find((a)=>a.ID == x.IN_ID)
     const y = {
+      id : x._id,
       class_ID : x.class_ID,
       instructorID : x.IN_ID,
       instructor : ins.firstName + " " + ins.lastName,
       subject : ins.subject,
+      level : ins.level || 'null',
       grade : x.grade,
       classType : x.classType,
       hall : x.hall,
       classDate : x.classDate,
       startTime : x.startTime,
-      endTime : x.startTime,
+      endTime : x.endTime,
       admission : x.admission,
       classFee : x.classFee,
       // createdAt : x.createdAt
@@ -35,19 +37,11 @@ const getAllClasses = async (req, res) => {
 
 // get a single class
 const getClass = async (req, res) => {
-  const { id } = req.params
-  
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such class'})
-  }
-
-  const class1 = await Class.findById(id)
-
-  if (!class1) {
-    return res.status(404).json({error: 'No such class'})
-  }
-  res.status(200).json(class1)
+  const class3 = await Class.findById({
+    "class_ID": req.params.id.toString()
+  })
+  // console.log('class3')
+  res.status(200).json(class3)
 }
 
 // create a new class
@@ -102,7 +96,7 @@ const getInstructorClass = async (req, res) => {
   const class3 = await Class.find({
     "IN_ID": req.params.id.toString()
   })
-  console.log('class3')
+  // console.log('class3')
   res.status(200).json(class3)
 }
 

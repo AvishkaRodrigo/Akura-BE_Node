@@ -17,7 +17,7 @@ const userProfile = async (req,res) => {
 
 // get all user
 const getUsers = async (req, res) => {
-  const users = await User.find({}).sort({createdAt: -1})
+  const users = await User.find({}).sort({createdAt: -1}).select('-password')
 
   res.status(200).json(users)
 }
@@ -30,7 +30,7 @@ const getUser = async (req, res) => {
     return res.status(404).json({error: 'No such user'})
   }
 
-  const user = await User.findById(id)
+  const user = await User.findById(id).select('-password')
 
   if (!user) {
     return res.status(404).json({error: 'No such user'})
@@ -121,9 +121,11 @@ const createUser = async (req, res) => {
           {expiresIn : 360000},   // ! set token expire time
           (err, token)=> {
             if(err) throw err;
-            res.status(200).json({token,msg: 'User registration success!'});
+            res.status(200).json({msg: 'User registration success!'});
           }
         )
+
+        
 
     } catch (error) { 
         // res.status(400).json({error: error.message})

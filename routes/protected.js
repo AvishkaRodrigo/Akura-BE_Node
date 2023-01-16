@@ -26,7 +26,8 @@ const {
   getParent,
   createParent,
   deleteParent,
-  updateParent
+  updateParent,
+  getMyStudents
 } = require('../controllers/parentControllers')
 
 
@@ -63,7 +64,7 @@ const {
   updatePayment,
   getAllPaidAddmisions,
   getAllPaidClassFeesOfStudent,
-  getAllPaidAddmisionsOfStudent,
+  myClasses,
   getAllPaidClassFeesOfStudentForClass,
   getAllStudentsPaidClassFeeForClass
 } = require('../controllers/paymentControllers')
@@ -97,7 +98,9 @@ const {
   getAttendance,
   createAttendance,
   deleteAttendance,
-  updateAttendance
+  updateAttendance,
+  markAttendance,
+  getClassAttendance
 } = require('../controllers/attendanceControllers');
 
 
@@ -149,6 +152,7 @@ const router = express.Router()
 
   // GET all parents
   router.get('/parent/', getParents)
+  router.get('/parent/students', auth, getMyStudents)
 
   // GET a single parent
   router.get('/parent/:id', getParent)
@@ -229,16 +233,16 @@ const router = express.Router()
   router.get('/allClassFees/', getAllPaidClassFees)
   router.get('/allClassFees/:id', getAllPaidClassFeesOfStudent)
   router.get('/allStudentFees/:classID', getAllStudentsPaidClassFeeForClass)
-  router.get('/classFees/:classID/student/:id', getAllPaidClassFeesOfStudentForClass)
+  router.get('/payment/:classID/student/:id', getAllPaidClassFeesOfStudentForClass)
 
   router.get('/allAddmissions/', getAllPaidAddmisions)
-  router.get('/allAddmissions/:id', getAllPaidAddmisionsOfStudent)
+  router.get('/allAddmissions/:id', myClasses)
 
   // GET a single payment
   router.get('/payment/:id', getPayment)
 
   // POST a new payment
-  router.post('/payment/', payClassFee)
+  router.post('/payment', payClassFee)
   
   // DELETE a payment
   router.delete('/payment/:id', deletePayment)
@@ -251,7 +255,7 @@ const router = express.Router()
 
 
   // GET all notifications
-  router.get('/notification/', getNotifications)
+  router.get('/notification/', auth, getNotifications)
 
   // GET a single notification
   router.get('/notification/:id', getNotification)
@@ -315,6 +319,9 @@ const router = express.Router()
 
   // POST a new attendance
   router.post('/attendance/', createAttendance)
+
+  router.post('/mark-attendance', markAttendance)
+  router.get('/show-attendance/:class_ID/:date', getClassAttendance)
 
   // DELETE a attendance
   router.delete('/attendance/:id', deleteAttendance)

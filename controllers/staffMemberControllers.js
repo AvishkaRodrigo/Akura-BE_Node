@@ -6,7 +6,7 @@ const User = require('../models/userModel')
 const getStaffMembers = async (req, res) => {
   const staffMembers = await StaffMember.find({
     "userType" : "4"
-  }).sort({createdAt: -1})
+  }).sort({createdAt: -1}).select('-password')
 
   res.status(200).json(staffMembers)
 }

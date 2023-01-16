@@ -21,7 +21,7 @@ const studentProfile =async(req,res) => {
 const getStudents = async (req, res) => {
   const students = await User.find({
     "userType" : "1"
-  }).sort({createdAt: -1})
+  }).sort({createdAt: -1}).select('-password')
 
   res.status(200).json(students)
 }
@@ -35,7 +35,7 @@ const getStudent = async (req, res) => {
   }
 
   // if(userType == 1){
-    const student = await User.findById(id)
+    const student = await User.findById(id).select('-password')
 
     if (!student) {
       return res.status(404).json({error: 'No such student'})

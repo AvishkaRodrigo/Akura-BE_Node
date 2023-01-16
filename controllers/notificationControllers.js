@@ -1,11 +1,29 @@
 const Notification = require('../models/notificationModel')
 const mongoose = require('mongoose')
+const Payment = require('../models/paymentModel')
 
 // get all notifications
 const getNotifications = async (req, res) => {
-  const notifications = await Notification.find({}).sort({createdAt: -1})
 
-  res.status(200).json(notifications)
+  // TODO - change this to id 
+  let studentID = req.user.userID
+  
+  const registeredClasses = await Payment.find({
+    "Admission" : true,
+    "ST_ID" : studentID,
+  })
+
+  const notifications = await Notification.find()
+  
+  const test = notifications.map((x)=>{
+    registeredClasses.map((y)=>{
+      if(x.class_ID == y.class_ID){
+        return x
+      }
+    })
+  })
+
+  res.status(200).json({"classes" : test})
 }
 
 // get a single notification
@@ -27,10 +45,10 @@ const getNotification = async (req, res) => {
 
 // create a new notification
 const createNotification = async (req, res) => {
-    const {notification_ID,	class_ID,	notifi_description} = req.body
+    const {class_ID,	header, message} = req.body
     
     try {
-        const notification = await Notification.create({notification_ID,	class_ID,	notifi_description})
+        const notification = await Notification.create({class_ID,	header, message})
         res.status(200).json(notification)
     } catch (error) {
         res.status(400).json({error: error.message})
