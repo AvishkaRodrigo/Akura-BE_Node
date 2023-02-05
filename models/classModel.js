@@ -43,6 +43,10 @@ const classSchema = new Schema({
     type : Number,
     required : true
   },
+  paymentLink : {
+    type : String,
+    required : true
+  },
 }, { timestamps: true })
 
 module.exports = mongoose.model('Class', classSchema)

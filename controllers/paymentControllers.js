@@ -22,13 +22,47 @@ const getAllPaidClassFeesOfStudent = async (req, res) => {
   res.status(200).json(payments)
 }
 const getAllStudentsPaidClassFeeForClass = async (req, res) => {
-  const { id } = req.params
+  const { classID } = req.params
+  // console.log(classID)
   const payments = await Payment.find({
     "Admission" : false,
-    "class_ID" : id
+    "class_ID" : classID
   }).sort({createdAt: -1})
 
   res.status(200).json(payments)
+}
+const getAllStudentsOfClass = async (req, res) => {
+  const { classID } = req.params
+  
+  const students = await User.find({
+    userType:1
+  })
+  const payments = await Payment.find({
+    "Admission" : true,
+    "class_ID" : classID
+  }).sort({createdAt: -1})
+
+  const classStudents = []
+
+  payments.map((x)=>{
+    students.map((s)=>{
+      if(s._id == x.ST_ID){
+        let ST = {
+          studentID : s._id,
+          firstName : s.firstName,
+          lastName : s.lastName,
+          enrolledDate : x.createdAt,
+          email : s.email,
+          gender : s.gender,
+          contactNumber : s.contactNumber,
+          ID:s.ID
+        }
+        classStudents.push(ST)
+      }
+    })
+  })
+
+  res.status(200).json(classStudents)
 }
 
 const getAllPaidClassFeesOfStudentForClass = async (req, res) => {
@@ -37,11 +71,36 @@ const getAllPaidClassFeesOfStudentForClass = async (req, res) => {
     "Admission" : false,
     "ST_ID" : id,
     "class_ID" : classID
-  }).sort({createdAt: -1})
-  
-  const classDetails = await Class.findById(classID)
+  }).sort({createdAt: +1})
 
-  res.status(200).json({payments,classDetails})
+  const instrctors = await User.find({
+    "userType" : 3
+  }).select('-password')
+  
+  const x = await Class.findById(classID)
+  // const class4FE = classDetails.map((x)=>{
+    const instructorInfo = instrctors.filter((a)=>a._id == x.IN_ID)
+    const classInfo = {
+      id : x._id,
+      class_ID : x.class_ID,
+      instructorID : x.IN_ID,
+      // instructor : ins.firstName + " " + ins.lastName,
+      // subject : ins.subject,
+      // level : ins.level || 'null',
+      grade : x.grade,
+      classType : x.classType,
+      hall : x.hall,
+      classDate : x.classDate,
+      startTime : x.startTime,
+      endTime : x.endTime,
+      admission : x.admission,
+      classFee : x.classFee,
+      // createdAt : x.createdAt
+    }
+    // return y
+  // })
+
+  res.status(200).json({payments,classInfo,instructorInfo:instructorInfo[0]})
 }
 
 
@@ -179,6 +238,7 @@ module.exports = {
   getAllPaidClassFees,
   getAllPaidClassFeesOfStudent,
   getAllStudentsPaidClassFeeForClass,
+  getAllStudentsOfClass,
   getAllPaidClassFeesOfStudentForClass,
   getAllPaidAddmisions,
   myClasses,

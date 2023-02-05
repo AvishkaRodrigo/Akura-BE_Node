@@ -7,12 +7,17 @@ const resultSchema = new Schema({
     type : String,
     required : true
   },
-  assignment_ID : {
+  class_ID : {
     type : String,
     required : true
   },
-  marks : {
+  assignment_ID : {
     type : String,
+    required : true,
+    // unique : true
+  },
+  marks : {
+    type : Number,
     required : true
   },
 

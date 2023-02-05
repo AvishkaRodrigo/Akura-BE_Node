@@ -7,28 +7,36 @@ const getAllClasses = async (req, res) => {
   const instrctors = await User.find({
     "userType" : 3
   }).select('-password')
-  const classes = await Class.find({})
   
-  const class4FE = classes.map((x)=>{
-    const ins = instrctors.find((a)=>a.ID == x.IN_ID)
-    const y = {
-      id : x._id,
-      class_ID : x.class_ID,
-      instructorID : x.IN_ID,
-      instructor : ins.firstName + " " + ins.lastName,
-      subject : ins.subject,
-      level : ins.level || 'null',
-      grade : x.grade,
-      classType : x.classType,
-      hall : x.hall,
-      classDate : x.classDate,
-      startTime : x.startTime,
-      endTime : x.endTime,
-      admission : x.admission,
-      classFee : x.classFee,
-      // createdAt : x.createdAt
+  const classes = await Class.find()
+  
+  let class4FE = []
+  classes.map((x)=>{
+    let ins = instrctors.find((a)=>a._id == x.IN_ID)
+    console.log(ins)
+    if(ins ==! null || ins !== undefined){
+      const y = {
+        id : x._id,
+        class_ID : x.class_ID,
+        instructorID : x.IN_ID,
+        instructor : ins.firstName + " " + ins.lastName,
+        subject : ins.subject,
+        level : ins.level || 'null',
+        grade : x.grade,
+        classType : x.classType,
+        hall : x.hall,
+        classDate : x.classDate,
+        startTime : x.startTime,
+        endTime : x.endTime,
+        admission : x.admission,
+        classFee : x.classFee,
+        paymentLink : x.paymentLink
+        // createdAt : x.createdAt
+      }
+      class4FE.push(y)
+    }else{
+      return res.status(200).json({msg : "No instructors found for class"})
     }
-    return y
   })
 
 
@@ -46,10 +54,10 @@ const getClass = async (req, res) => {
 
 // create a new class
 const createClass = async (req, res) => {
-    const {class_ID,	IN_ID,	grade,	classType,	hall,	classDate,	startTime,	endTime, admission, classFee} = req.body
+    const {class_ID,	IN_ID,	grade,	classType,	hall,	classDate,	startTime,	endTime, admission, classFee, paymentLink} = req.body
     // console.log('createclass')
     try {
-      const class2 = await Class.create({class_ID,	IN_ID,	grade,	classType,	hall,	classDate,	startTime,	endTime, admission, classFee})
+      const class2 = await Class.create({class_ID,	IN_ID,	grade,	classType,	hall,	classDate,	startTime,	endTime, admission, classFee, paymentLink})
         res.status(200).json(class2)
     } catch (error) {
         res.status(400).json({error: error.message})

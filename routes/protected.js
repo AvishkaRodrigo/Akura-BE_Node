@@ -66,7 +66,8 @@ const {
   getAllPaidClassFeesOfStudent,
   myClasses,
   getAllPaidClassFeesOfStudentForClass,
-  getAllStudentsPaidClassFeeForClass
+  getAllStudentsPaidClassFeeForClass,
+  getAllStudentsOfClass
 } = require('../controllers/paymentControllers')
 
 const {
@@ -74,7 +75,8 @@ const {
   getNotification,
   createNotification,
   deleteNotification,
-  updateNotification
+  updateNotification,
+  createEarlyLeaveNotification
 } = require('../controllers/notificationControllers')
 
 const {
@@ -90,7 +92,10 @@ const {
   getResult,
   createResult,
   deleteResult,
-  updateResult
+  updateResult,
+  getAllAssignmentIdsOfClass,
+  getAllResultsOfAssignment,
+  getAllResultsOfAssignmentForParentView
 } = require('../controllers/resultControllers')
 
 const {
@@ -233,6 +238,7 @@ const router = express.Router()
   router.get('/allClassFees/', getAllPaidClassFees)
   router.get('/allClassFees/:id', getAllPaidClassFeesOfStudent)
   router.get('/allStudentFees/:classID', getAllStudentsPaidClassFeeForClass)
+  router.get('/allStudents/:classID', getAllStudentsOfClass)
   router.get('/payment/:classID/student/:id', getAllPaidClassFeesOfStudentForClass)
 
   router.get('/allAddmissions/', getAllPaidAddmisions)
@@ -243,6 +249,8 @@ const router = express.Router()
 
   // POST a new payment
   router.post('/payment', payClassFee)
+
+  
   
   // DELETE a payment
   router.delete('/payment/:id', deletePayment)
@@ -262,6 +270,7 @@ const router = express.Router()
 
   // POST a new notification
   router.post('/instructor/notification/create/', createNotification)
+  router.post('/notification/create/', createEarlyLeaveNotification)
 
   // DELETE a notification
   router.delete('/notification/:id', deleteNotification)
@@ -297,6 +306,14 @@ const router = express.Router()
 
   // GET a single result
   router.get('/result/:id', getResult)
+  
+  //
+  router.get('/getAllAssignmentIdsOfClass', getAllAssignmentIdsOfClass)
+
+  //
+  router.get('/getAllResultsOfAssignment', getAllResultsOfAssignment)
+  //
+  router.get('/getAllResultsOfAssignmentForParentView', getAllResultsOfAssignmentForParentView)
 
   // POST a new result
   router.post('/result/', createResult)
