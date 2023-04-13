@@ -30,17 +30,20 @@ const getParent = async (req, res) => {
 }
 
 const getMyStudents = async (req, res) => {
-  console.log( req.user.studentIds)
+  console.log( "My students" ,req.user.studentIds)
   if (req.user.userType !== 2){
     return res.status(400).json({msg : "access denied!"})
   }else{
     const myStudents = req.user.studentIds;
     const myStuInfo = [];
-    const allStudents = await User.find().select('-password')
+    const allStudents = await User.find({
+      "userType" : 1
+    }).select('-password')
 
     myStudents.map(async (x)=>{
       allStudents.map((y)=>{
-        if(x == y.id){
+        // console.log(y)
+        if(x == y.email){
           myStuInfo.push(y)
         }
       })  

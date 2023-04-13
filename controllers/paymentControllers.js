@@ -6,7 +6,8 @@ const mongoose = require('mongoose')
 // classFees
 const getAllPaidClassFees = async (req, res) => {
   const payments = await Payment.find({
-    "Admission" : false
+    "Admission" : false,
+    "Type": "STU"
   }).sort({createdAt: -1})
 
   res.status(200).json(payments)
@@ -16,6 +17,7 @@ const getAllPaidClassFeesOfStudent = async (req, res) => {
   const { id } = req.params
   const payments = await Payment.find({
     "Admission" : false,
+    "Type": "STU",
     "ST_ID" : id
   }).sort({createdAt: -1})
 
@@ -26,6 +28,7 @@ const getAllStudentsPaidClassFeeForClass = async (req, res) => {
   // console.log(classID)
   const payments = await Payment.find({
     "Admission" : false,
+    "Type": "STU",
     "class_ID" : classID
   }).sort({createdAt: -1})
 
@@ -39,6 +42,7 @@ const getAllStudentsOfClass = async (req, res) => {
   })
   const payments = await Payment.find({
     "Admission" : true,
+    "Type": "STU",
     "class_ID" : classID
   }).sort({createdAt: -1})
 
@@ -70,6 +74,7 @@ const getAllPaidClassFeesOfStudentForClass = async (req, res) => {
   const payments = await Payment.find({
     "Admission" : false,
     "ST_ID" : id,
+    "Type": "STU",
     "class_ID" : classID
   }).sort({createdAt: +1})
 
@@ -107,7 +112,27 @@ const getAllPaidClassFeesOfStudentForClass = async (req, res) => {
 // Admissions
 const getAllPaidAddmisions = async (req, res) => {
   const payments = await Payment.find({
-    "Admission" : true
+    "Admission" : true,
+    "Type": "STU"
+  }).sort({createdAt: -1})
+
+  res.status(200).json(payments)
+}
+
+const getInstructorPayments = async (req, res) => {
+  const {IN_ID} = req.params 
+  let instructorID = null
+  if(req.user.userType == 5){
+    instructorID = IN_ID
+    console.log('admin')
+  }else{
+    console.log('user')
+    instructorID = req.user.id
+  }
+  
+  const payments = await Payment.find({
+    "Type": "INS",
+    "IN_ID" : instructorID 
   }).sort({createdAt: -1})
 
   res.status(200).json(payments)
@@ -118,6 +143,7 @@ const myClasses = async (req, res) => {
   console.log(id)
   const payments = await Payment.find({
     "Admission" : true,
+    "Type": "STU",
     "ST_ID" : id
   }).sort({createdAt: -1})
   
@@ -183,20 +209,19 @@ const getPayment = async (req, res) => {
 
 // create a new payment
 const payClassFee = async (req, res) => {
-    const {payment_ID,	class_ID,	ST_ID,	SM_ID, Admission, Amount,	month,	Type} = req.body
+    const {payment_ID,	class_ID,	ST_ID,	SM_ID, IN_ID, Admission, Amount,	month,	Type} = req.body
     // console.log(req.user)
     // TODO need to take student ID
     
 
     // console.log(res)
     try {
-        const payment = await Payment.create({payment_ID,	class_ID,	ST_ID,	SM_ID, Admission, Amount,	month,	Type})
+        const payment = await Payment.create({payment_ID,	class_ID,	ST_ID, IN_ID,	SM_ID, Admission, Amount,	month,	Type})
         res.status(200).json(payment)
     } catch (error) {
         res.status(400).json({error: error.message})
     }
 }
-
 
 // delete a payment
 const deletePayment = async (req, res) => {
@@ -245,5 +270,6 @@ module.exports = {
   getPayment,
   payClassFee,
   deletePayment,
-  updatePayment
+  updatePayment,
+  getInstructorPayments
 }

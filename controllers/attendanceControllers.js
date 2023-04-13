@@ -6,8 +6,14 @@ const moment = require('moment-timezone')
 const { json } = require('express')
 
 // get all attendances
-const getAttendances = async (req, res) => {
-  const attendances = await Attendance.find({}).sort({createdAt: -1})
+const getStudentAttendance = async (req, res) => {
+
+  const {class_ID, ST_ID} = req.query
+  // console.log(req)
+  const attendances = await Attendance.find({
+    class_ID : class_ID,
+    ST_ID : ST_ID
+  }).sort({createdAt: -1})
 
   res.status(200).json(attendances)
 }
@@ -79,18 +85,18 @@ const updateAttendance = async (req, res) => {
 
 const markAttendance = async (req, res) => {
   const {ST_ID,	class_ID,	attend_date} = req.body
-  
+  console.log(req.body)
   const studentOfClass = await Payment.find({
     // "Admission" : true,
     "class_ID" : class_ID,
     "ST_ID" : ST_ID
   })
-
+  // console.log(studentOfClass)
   if(studentOfClass.length > 0){
     // return res.status(200).json(studentOfClass)
     let paidAdmission = false
     studentOfClass.map((x)=>{
-      if(x.Admission === true){
+      if(x.Admission === true && x.Type != "STU"){
         paidAdmission = true;
       }
     })
@@ -185,11 +191,11 @@ const getClassAttendance = async (req, res) => {
 }
 
 module.exports = {
-  getAttendances,
+  getStudentAttendance,
   getAttendance,
   createAttendance,
   deleteAttendance,
   updateAttendance,
   markAttendance, 
-  getClassAttendance
+  getClassAttendance,
 }

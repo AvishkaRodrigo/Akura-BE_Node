@@ -53,7 +53,8 @@ const {
   createClass,
   deleteClass,
   updateClass,
-  getInstructorClass
+  getInstructorClass,
+  getClassFeesForInstructor
 } = require('../controllers/classControllers')
 
 const {
@@ -67,7 +68,8 @@ const {
   myClasses,
   getAllPaidClassFeesOfStudentForClass,
   getAllStudentsPaidClassFeeForClass,
-  getAllStudentsOfClass
+  getAllStudentsOfClass,
+  getInstructorPayments
 } = require('../controllers/paymentControllers')
 
 const {
@@ -99,7 +101,7 @@ const {
 } = require('../controllers/resultControllers')
 
 const {
-  getAttendances,
+  getStudentAttendance,
   getAttendance,
   createAttendance,
   deleteAttendance,
@@ -230,6 +232,8 @@ const router = express.Router()
 
   router.get('/getInstructorClasses/:id', getInstructorClass)
 
+  router.get('/getClassFeesForInstructor', auth, getClassFeesForInstructor)
+
 
 // #############################Payment#############################
 
@@ -246,6 +250,7 @@ const router = express.Router()
 
   // GET a single payment
   router.get('/payment/:id', getPayment)
+  router.get('/instructor/institute-payments/:IN_ID', auth ,getInstructorPayments)
 
   // POST a new payment
   router.post('/payment', payClassFee)
@@ -329,7 +334,7 @@ const router = express.Router()
 
 
   // GET all attendances
-  router.get('/attendance/', getAttendances)
+  router.get('/getStudentAttendance/', auth,getStudentAttendance)
 
   // GET a single attendance
   router.get('/attendance/:id', getAttendance)

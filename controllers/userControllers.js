@@ -7,6 +7,7 @@ const gravatar = require('gravatar')
 const jwt = require('jsonwebtoken')
 
 const userProfile = async (req,res) => {
+  console.log(req.headers)
   try{
     const user = await User.findById(req.user.id).select('-password');
     res.json(user)

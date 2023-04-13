@@ -15,6 +15,10 @@ const paymentSchema = new Schema({
     type : String,
     required : true
   },
+  IN_ID : {
+    type : String,
+    // required : true
+  },	
   SM_ID : {
     type : String,
     // required : true
@@ -32,8 +36,8 @@ const paymentSchema = new Schema({
     required : true
   },
   Type : {
-    type : String,
-    // required : true
+    type : String,      // STU, INS
+    required : true
   },
 
 }, { timestamps: true })

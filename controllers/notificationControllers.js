@@ -20,6 +20,7 @@ const getNotifications = async (req, res) => {
   
   const registeredClasses = await Payment.find({
     "Admission" : true,
+    "Type": "STU",
     "ST_ID" : studentID,
   })
 

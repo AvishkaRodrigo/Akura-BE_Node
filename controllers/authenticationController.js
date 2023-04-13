@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 const {check, validationResult} = require('express-validator')
 const bcrypt = require('bcrypt')
 const User = require('../models/userModel');
-const Instructor = require('../models/instructorModel');
-
 
 // create a new user
 const authUser = (
@@ -25,14 +23,11 @@ const authUser = (
         try {
             let user = await User.findOne({email});
             console.log(user)
-            // TODO implement a logic to log all type of users
-
-            // let user = await Instructor.findOne({email});
             if (!user) {
                 return res.status(400).json({errors: [{msg : "Invalid credentials"}]})
             }
             
-            const isMatch = await bcrypt.compare(password,user.password)
+            const isMatch = bcrypt.compare(password, user.password)
 
             if(!isMatch) {
                 return res.status(400).json({errors: [{msg: 'Invalid credentials'}]});
@@ -58,19 +53,11 @@ const authUser = (
                     }
                 }
             }
-            // const payload = {
-            //     user : {
-            //         id: user.id,
-            //         userID : user.ID,
-            //         userType : user.userType,
-            //         email : user.email
-            //     }
-            // }
 
             jwt.sign(
                 payload,
                 process.env.JWTSECRET,
-                {expiresIn : 360000},   // ! set token expire time
+                {expiresIn : 3600},   // ! set token expire time
                 (err, token)=> {
                     const decoded = jwt.verify(token, process.env.JWTSECRET)
                     if(err) throw err;
