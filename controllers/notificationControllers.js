@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const Payment = require('../models/paymentModel')
 const Class = require('../models/classModel')
 const User = require('../models/userModel')
+const { default: sendEmail } = require('../utils/sendmails')
 
 // get all notifications
 const getNotifications = async (req, res) => {
@@ -109,14 +110,50 @@ const createNotification = async (req, res) => {
 const createEarlyLeaveNotification = async (req, res) => {
     const {class_ID,	header, message, ST_ID} = req.body
 
-    // let options = {
-    //   to : 'biofinance.sl@gmail.com',
-    //   subject : 'New user registered!',
-    //   text : "<h2 style={color='#000'}>New user registered.</h2><br/>Name :" + user.firstName + " " + user.lastName +"<br/>Email : " + user.email + "<br/>Telephone : " + user.telephone
-    // }
+    let options = {
+      to : 'avishkachathuranga98@gmail.com@gmail.com',
+      subject : 'Akura Institute',
+      // text : "<h2 style={color='#000'}>New user registered.</h2><br/>Name :" + user.firstName + " " + user.lastName +"<br/>Email : " + user.email + "<br/>Telephone : " + user.telephone
+    }
 
-    // const result = sendEmail(options)
-    
+    // const result = async (options) => {
+    //   console.log('reached here node mailer');
+    //    const transport = createTransport({
+    //      host: process.env.SMTP_HOST,
+    //      service: 'gmail',
+    //      // port: Number(process.env.SMTP_PORT),
+    //      secure: false, // true for 465, false for other ports
+    //      auth: {
+    //        user: process.env.SMTP_USER, // generated ethereal user
+    //        pass: process.env.SMTP_PASSWORD // generated ethereal password
+    //      }
+    //    });
+     
+    //    // console.log(options)
+    //    // Message object
+    //    const message = {
+    //      from: process.env.SMTP_USER,
+    //      to: options.to,
+    //      subject: options.subject,
+    //      html: options.text
+    //    };
+     
+    //    // const info = await transport.sendMail(message);
+    //    // console.log(`Message sent successfully as ${info.messageId}`);
+       
+    //    await transport.sendMail(message, (error, info)=> {
+    //      if (error) {
+    //        console.log(error);
+    //        return error
+    //      } else {
+    //        console.log('Email sent: ' + info.response);
+    //        return info.response
+    //      }
+    //    });
+     
+    //    // return info.messageId
+    //  };
+    // console.log("RES", result)
     try {
         const notification = await Notification.create({class_ID,	header, message, ST_ID})
         res.status(200).json(notification)

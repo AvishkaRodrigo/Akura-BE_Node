@@ -7,7 +7,7 @@ const moment = require('moment-timezone')
 // get all classes
 const getAllClasses = async (req, res) => {
 
-  const {level, grade, classType} = req.query
+  const {level, grade, classType, day} = req.query
   const instrctors = await User.find({
     "userType" : 3
   }).select('-password')
@@ -69,6 +69,16 @@ const getAllClasses = async (req, res) => {
     let temp = []
     class4FE.map((x)=>{
       if(x.classType == classType){
+        temp.push(x)
+      }
+    })
+    class4FE = temp
+  }
+
+  if(day != undefined && day != null){
+    let temp = []
+    class4FE.map((x)=>{
+      if(x.classDate == day){
         temp.push(x)
       }
     })

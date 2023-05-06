@@ -96,7 +96,7 @@ const markAttendance = async (req, res) => {
     // return res.status(200).json(studentOfClass)
     let paidAdmission = false
     studentOfClass.map((x)=>{
-      if(x.Admission === true && x.Type != "STU"){
+      if(x.Admission === true && x.Type == "STU"){
         paidAdmission = true;
       }
     })
