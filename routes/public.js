@@ -8,7 +8,7 @@ const Instructor = require('../models/instructorModel');
 
 const router = express.Router()
 
-// #############################Student#############################
+// #############################PUBLIC#############################
 
 router.post('/login', authUser);
 
