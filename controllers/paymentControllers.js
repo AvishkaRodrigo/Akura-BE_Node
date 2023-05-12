@@ -23,6 +23,8 @@ const getAllPaidClassFeesOfStudent = async (req, res) => {
 
   res.status(200).json(payments)
 }
+
+// get all students who paid class fees for a class
 const getAllStudentsPaidClassFeeForClass = async (req, res) => {
   const { classID } = req.params
   // console.log(classID)
@@ -34,6 +36,8 @@ const getAllStudentsPaidClassFeeForClass = async (req, res) => {
 
   res.status(200).json(payments)
 }
+
+// get all students of a class based on the admission
 const getAllStudentsOfClass = async (req, res) => {
   const { classID } = req.params
   

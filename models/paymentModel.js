@@ -36,7 +36,7 @@ const paymentSchema = new Schema({
     required : true
   },
   Type : {
-    type : String,      // STU, INS
+    type : String,      // STU - student payements, INS - instructor payments
     required : true
   },
 

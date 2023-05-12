@@ -158,7 +158,9 @@ const router = express.Router()
 
 
   // GET all parents
-  router.get('/parent/', getParents)
+  router.get('/parent/',auth ,getParents)
+
+  // GET all students of a parent
   router.get('/parent/students', auth, getMyStudents)
 
   // GET a single parent
@@ -171,7 +173,7 @@ const router = express.Router()
   router.delete('/parent/:id', deleteParent)
 
   // UPDATE a parent
-  router.patch('/parent/:id', updateParent)
+  router.patch('/parent/:id', updateParent) 
 
 
 // #############################Instructor#############################
@@ -230,8 +232,10 @@ const router = express.Router()
   // UPDATE a class
   router.patch('/class/:id', updateClass)
 
+  // GET all classes of instructor
   router.get('/getInstructorClasses/:id', getInstructorClass)
 
+  // get all class and their paid fees for instructor
   router.get('/getClassFeesForInstructor', auth, getClassFeesForInstructor)
 
 
@@ -240,23 +244,34 @@ const router = express.Router()
 
   // GET all payments
   router.get('/allClassFees/', getAllPaidClassFees)
+ 
+  // GET all paid fees of a student
   router.get('/allClassFees/:id', getAllPaidClassFeesOfStudent)
+  
+  // GET all paid student for a class
   router.get('/allStudentFees/:classID', getAllStudentsPaidClassFeeForClass)
-  router.get('/allStudents/:classID', getAllStudentsOfClass)
-  router.get('/payment/:classID/student/:id', getAllPaidClassFeesOfStudentForClass)
+  
+  // GET all student those who are registered for a class
+  router.get('/allStudents/:classID', auth, getAllStudentsOfClass)
 
+  // GET class fees for a particular class for a particular student
+  router.get('/payment/:classID/student/:id', auth, getAllPaidClassFeesOfStudentForClass)
+
+  // GET all registered students
   router.get('/allAddmissions/', getAllPaidAddmisions)
-  router.get('/allAddmissions/:id', myClasses)
+  
+  // get all classes of a student
+  router.get('/allAddmissions/:id', auth, myClasses)
 
   // GET a single payment
   router.get('/payment/:id', getPayment)
+  
+  // get all payments that are paid for a instructor
   router.get('/instructor/institute-payments/:IN_ID', auth ,getInstructorPayments)
 
   // POST a new payment
-  router.post('/payment', payClassFee)
+  router.post('/payment', auth, payClassFee)
 
-  
-  
   // DELETE a payment
   router.delete('/payment/:id', deletePayment)
 
@@ -275,6 +290,7 @@ const router = express.Router()
 
   // POST a new notification
   router.post('/instructor/notification/create/', createNotification)
+  
   router.post('/notification/create/', createEarlyLeaveNotification)
 
   // DELETE a notification
@@ -312,12 +328,13 @@ const router = express.Router()
   // GET a single result
   router.get('/result/:id', getResult)
   
-  //
+  // GET all assignment ids of a Class
   router.get('/getAllAssignmentIdsOfClass', getAllAssignmentIdsOfClass)
 
-  //
+  // GET all results of all assignments 
   router.get('/getAllResultsOfAssignment', getAllResultsOfAssignment)
-  //
+
+  // GET all results of assignments of a student for parent
   router.get('/getAllResultsOfAssignmentForParentView', getAllResultsOfAssignmentForParentView)
 
   // POST a new result
@@ -342,7 +359,10 @@ const router = express.Router()
   // POST a new attendance
   router.post('/attendance/', createAttendance)
 
+  // MARK student attendance
   router.post('/mark-attendance', markAttendance)
+
+  // GET student attendance of a class for a particular date
   router.get('/show-attendance/:class_ID/:date', getClassAttendance)
 
   // DELETE a attendance

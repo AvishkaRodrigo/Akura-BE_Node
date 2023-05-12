@@ -109,7 +109,6 @@ const createUser = async (req, res) => {
         // res.st atus(200).send(user)
         await user.save();
 
-        // user information need to include in jwt token
         const payload = {
           user: {
             id : user.id
@@ -119,7 +118,7 @@ const createUser = async (req, res) => {
         jwt.sign(
           payload, 
           process.env.JWTSECRET,
-          {expiresIn : 360000},   // ! set token expire time
+          {expiresIn : 3600},   // ! set token expire time
           (err, token)=> {
             if(err) throw err;
             res.status(200).json({msg: 'User registration success!'});

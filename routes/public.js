@@ -10,7 +10,6 @@ const router = express.Router()
 
 // #############################Student#############################
 
-// GET all student
 router.post('/login', authUser);
 
 module.exports = router
