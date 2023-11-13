@@ -12,4 +12,4 @@ const router = express.Router()
 
 router.post('/login', authUser);
 
-module.exports = router
+module.exports = router 
